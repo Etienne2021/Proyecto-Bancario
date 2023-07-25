@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1690245321 source:e:\git hub\proyecto-bancario\proyecto-bancario\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+
