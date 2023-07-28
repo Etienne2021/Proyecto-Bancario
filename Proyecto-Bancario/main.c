@@ -14,8 +14,8 @@ typedef struct
     int dinero;
 } cliente;
 
-void registro_cliente_cuentas(char nombre_archivo[],int id);
-void registro_nuevo_cliente ( char nombre_archivo[],int id);
+void registro_cliente_cuentas(char nombre_archivo[]);
+void registro_nuevo_cliente ( char nombre_archivo[]);
 void consulta_clientes(char nombre_archivo[],char nombre[],char apellido[]);
 void mostrarcliente(cliente nuevo);
 int validacionID(char nombre_archivo[],int id);
@@ -40,118 +40,97 @@ int main()
     float monto_prestamo;
     float tasa_anual;
     int meses;
-    srand(time(NULL));
     int id;
-    id=rand()%10000;
+    srand(time(NULL));
 
 
- int option;
-    do {
+    int option;
+    do
+    {
         menu();
         scanf ("%d",&option);
 
 
 
-
-
-
-
-
-
-    switch(option)
-    {
-
-    case 1:
-        registro_cliente_cuentas(nombre_archivo,id);
-        break;
-    case 2:
-        printf("Para realizar DEPOSITO/RETIRO/TRANSFERENCIA ingrese su ID");
-        fflush(stdin);
-        scanf("%i",&id);
-
-        int posicion=validacionID(nombre_archivo,id);
-
-        if (posicion==-1)
+        switch(option)
         {
 
-            printf("ID NO REGISTRADO");
-        }
-        else
-        {
-            deposito_y_retiros(nombre_archivo,posicion,dinero);
-        }
-
-        break;
-
-
-    case 3:
-        printf("***********************************\n");
-        puts("BIENBENIDO AL SECTOR DE INVERSIONES\n");
-        printf("***********************************\n");
-        printf("\n");
-        printf("1. CALCULADORA PLAZO FIJO\n");
-        printf("2. VOLVER AL INICIO\n");
-        fflush(stdin);
-        scanf("%i",&opcion_inversion);
-
-         if (opcion_inversion=2){
-            menu();
-         }
-
-        if (opcion_inversion=1)
-        {
-            printf("Ingrese su id");
+        case 1:
+            registro_cliente_cuentas(nombre_archivo);
+            break;
+        case 2:
+            printf("Para realizar DEPOSITO/RETIRO/TRANSFERENCIA ingrese su ID");
             fflush(stdin);
-            scanf("%i",&id_inversor);
-            posicion=validacionID(nombre_archivo,id_inversor);
+            scanf("%i",&id);
 
+            int posicion=validacionID(nombre_archivo,id);
 
             if (posicion==-1)
-        {
+            {
 
-            printf("ID NO REGISTRADO");
-        }
-        else
-        {
+                printf("ID NO REGISTRADO");
+            }
+            else
+            {
+                deposito_y_retiros(nombre_archivo,posicion,dinero);
+            }
 
-
-    cargar_datos_inversion(&monto_prestamo,&tasa_anual,&meses);
-    float monto_final=inversion_plazo_fijo(monto_prestamo,tasa_anual,meses);
-    printf("Monto final:%f",monto_final);
-        }
+            break;
 
 
-        }
-        break;
-
-    case 4:
-
-        while (continuar4==1)
-        {
-
-            printf("Ingrese el nombre del cliente a consultar\n");
+        case 3:
+            printf("***********************************\n");
+            puts("BIENBENIDO AL SECTOR DE INVERSIONES\n");
+            printf("***********************************\n");
+            printf("\n");
+            printf("1. CALCULADORA PLAZO FIJO\n");
+            printf("2. VOLVER AL INICIO\n");
             fflush(stdin);
-            scanf("%s",&nombre);
-            printf("Ingrese el apellido del cliente a consultar\n");
-            fflush(stdin);
-            scanf("%s",&apellido);
-            consulta_clientes(nombre_archivo,nombre,apellido);
+            scanf("%i",&opcion_inversion);
 
-            printf("Desea seguir consultando? Presione 1\n");
-            fflush(stdin);
-            scanf("%i",&continuar4);
+            if (opcion_inversion==1)
+            {
+                printf("Ingrese su id");
+                fflush(stdin);
+                scanf("%i",&id_inversor);
+                posicion=validacionID(nombre_archivo,id_inversor);
+
+
+                if (posicion==-1)
+                {
+
+                    printf("ID NO REGISTRADO");
+                }
+                else
+                {
+
+                    cargar_datos_inversion(&monto_prestamo,&tasa_anual,&meses);
+                    float monto_final=inversion_plazo_fijo(monto_prestamo,tasa_anual,meses);
+                    printf("Monto final:%f",monto_final);
+                }
+
+
+            }
+            break;
+
+        case 4:
+
+
+
+                printf("Ingrese el nombre del cliente a consultar\n");
+                fflush(stdin);
+                scanf("%s",&nombre);
+                printf("Ingrese el apellido del cliente a consultar\n");
+                fflush(stdin);
+                scanf("%s",&apellido);
+                consulta_clientes(nombre_archivo,nombre,apellido);
+
+
         }
 
-        if (continuar4!=1){
-            menu();
-        }
 
-
-        break;
     }
-
-
-} while ( option != 0 );
+    while ( option != 0 );
 
     return 0;
 }
@@ -178,7 +157,7 @@ void menu()
 
 
 
-void registro_cliente_cuentas(char nombre_archivo[],int id)
+void registro_cliente_cuentas(char nombre_archivo[])
 {
 
     int opciones;
@@ -189,7 +168,7 @@ void registro_cliente_cuentas(char nombre_archivo[],int id)
     if(opciones==1)
     {
 
-        registro_nuevo_cliente(nombre_archivo,id);
+        registro_nuevo_cliente(nombre_archivo);
 
     }
 
@@ -197,20 +176,17 @@ void registro_cliente_cuentas(char nombre_archivo[],int id)
 }
 
 
-void registro_nuevo_cliente ( char nombre_archivo[],int id)
+void registro_nuevo_cliente ( char nombre_archivo[])
 {
 
 
     FILE *archi;
     archi= fopen(nombre_archivo,"ab");
     cliente nuevo;
-    int continuar=1;
+    int repeticion;
+    int id;
     if (archi!=NULL)
     {
-
-        while (continuar==1)
-        {
-
             printf("Nombre del nuevo cliente\n");
             fflush(stdin);
             scanf("%s",&nuevo.nombre);
@@ -227,22 +203,46 @@ void registro_nuevo_cliente ( char nombre_archivo[],int id)
             fflush(stdin);
             scanf("%i",&nuevo.dni);
 
+
+
+            printf("Ingrese su id");
+            fflush(stdin);
+            scanf("%i",&id);
+            repeticion=repeticionID(nombre_archivo,id);
+            printf("Repeticion %i \n",repeticion);
+
+            while (repeticion==1){
+
+                printf("id ya existe\n");
+                printf("Ingrese otra\n");
+                fflush(stdin);
+                scanf("%i",&id);
+                repeticion=repeticionID(nombre_archivo,id);
+            }
+            if (repeticion==0){
+                nuevo.id=id;
+            }
+
+            /*
+            do
+            {
+                id=rand()%6;
+              repeticion=repeticionID(nombre_archivo,id);
+
+            }
+            while (repeticion==1);
+
             nuevo.id=id;
-            printf("Su ID es:%i\n",id);
-
-
-
+            printf("Su ID es: %i \n",id);
+*/
 
             fwrite(&nuevo,sizeof(cliente),1,archi);
 
-            printf("Quiere registrar un nuevo cliente?\n");
-            fflush(stdin);
-            scanf("%i",&continuar);
         }
         fclose(archi);
     }
 
-}
+
 
 void consulta_clientes(char nombre_archivo[],char nombre[],char apellido[])
 {
@@ -293,6 +293,7 @@ void mostrarcliente(cliente nuevo)
     printf("Edad %i \n",nuevo.edad);
     printf("DNI %i \n",nuevo.dni);
     printf("Dinero %i \n",nuevo.dinero);
+    printf("ID %i \n",nuevo.id);
 
 }
 
@@ -530,38 +531,79 @@ void transferencia(char nombre_archivo[],int posicion)
 float inversion_plazo_fijo(float monto_prestamo,float tasa_anual,int meses)
 {
 
-float tasa_mensual;
-tasa_mensual=(tasa_anual / 100) / 12; /**Convertir la tasa anual a tasa mensual*/
+    float tasa_mensual;
+    tasa_mensual=(tasa_anual / 100) / 12; /**Convertir la tasa anual a tasa mensual*/
 
-float monto_final;
-monto_final=monto_prestamo;
+    float monto_final;
+    monto_final=monto_prestamo;
 
-    for (int i=0; i<meses;i++) {
+    for (int i=0; i<meses; i++)
+    {
 
         monto_final=monto_final+((float)monto_final*(float)tasa_mensual);
     }
 
 
-return monto_final;
+    return monto_final;
 }
 
 
-void cargar_datos_inversion(float *monto_prestamo,float *tasa_anual,int *meses){
+void cargar_datos_inversion(float *monto_prestamo,float *tasa_anual,int *meses)
+{
 
-printf("Ingrese el MONTO DEL PRESTAMO");
-fflush(stdin);
-scanf("%f",monto_prestamo);
-
-
-printf("Ingrese la TASA ANUAL");
-fflush(stdin);
-scanf("%f",tasa_anual);
+    printf("Ingrese el MONTO DEL PRESTAMO");
+    fflush(stdin);
+    scanf("%f",monto_prestamo);
 
 
-printf("Ingrese cantidad de MESES");
-fflush(stdin);
-scanf("%i",meses);
+    printf("Ingrese la TASA ANUAL");
+    fflush(stdin);
+    scanf("%f",tasa_anual);
+
+
+    printf("Ingrese cantidad de MESES");
+    fflush(stdin);
+    scanf("%i",meses);
 
 
 
 }
+
+
+
+
+
+
+
+int repeticionID(char nombre_archivo[],int id)
+{
+
+    int repeticion=0;
+    cliente repeticion_ID;
+    FILE *archi;
+    archi=fopen(nombre_archivo,"rb");
+
+    if (archi!=NULL)
+    {
+
+        while(!feof(archi))
+        {
+            fread(&repeticion_ID,sizeof(cliente),1,archi);
+
+            if (!feof(archi))
+            {
+
+                if (repeticion_ID.id==id)
+                {
+                    repeticion=1;
+
+                }
+
+            }
+        }
+        fclose(archi);
+    }
+    return repeticion;
+}
+
+
